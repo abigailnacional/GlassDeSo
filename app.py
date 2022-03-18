@@ -1,10 +1,31 @@
+from typing import Optional
+from xmlrpc.client import boolean
 from flask import Flask, flash, redirect, render_template, request, \
-    url_for, session   # pragma: no cover
+    url_for, session  # pragma: no cover
 from BitcloutIdentity import BitcloutIdentity
 import BitcloutAPI
 
 app = Flask(__name__) 
 app.secret_key = "super secret key"
+
+#Class for posts made for GlassDeSo
+class GDSPosts:
+    def __init__(
+            self,
+            postID: int,
+            author: str,
+            company: str,
+            job: str,
+            offerStat: bool,
+            #hashVal is optional because we don't know what the hash is when we
+            #  post it; we have to look it up and add it later
+            hashVal: Optional[str] = ""):
+        self.postID = postID
+        self.author = author
+        self.company = company
+        self.job = job
+        self.offerStat = offerStat
+        self.hashVal = hashVal
 
 @app.route("/")
 def hello(): 
@@ -27,14 +48,9 @@ def login():
             if(not identity.validateJWT(jwt)):
                 error = "Could not login"
             else:
-                #userHolds = BitcloutAPI.getUserHodlings('BC1YLint2QNJWyNMX8kAiiTiYjT8yrTNYtzXKbGhXRoj7dPyNHboQLY', 'NeonStoic', checkForKey=pubkey)
-                #if(userHolds == True):
-                    print('user holds NeonStoic. Log them in!')
-                    session['pubkey'] = pubkey
-                    return redirect('/home')
-                #else:
-                    #session['pubkey'] = None
-                    #error = "Sorry! You don't hold any NeonStoic coin!"
+                print('user holds NeonStoic. Log them in!')
+                session['pubkey'] = pubkey
+                return redirect('/home')
 
     return render_template('login.html', test='this is a test', pubkey=pubkey, jwt=jwt, error=error)
 
