@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<head>
+    <style>
+    </style>
+</head>
+<body>
+    <!--Code for home page (not including the site header) goes here.-->
+    <h1>Create A New Post</h1>
+    <form action="newpost" method="post">
+    <label for="company">Enter Company Name</label><br>
+    <input type="text" name="company" value="" required><br>
+    <label for="job">Enter Job Title</label><br>
+    <input type="text" name="job" value="" required><br>
+    <input type="checkbox" name="offer_stat"><label 
+        for="offer_stat">   I received an offer from this company</label><br>
+    <input type="submit" value="Submit">
+</form>
+</body>
+{% endblock %}
