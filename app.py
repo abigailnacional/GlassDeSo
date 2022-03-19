@@ -92,13 +92,25 @@ def home():
     return redirect('/login')
 
 #Page where user creates a new post
-@app.route('/newpost')
+@app.route('/newpost', methods = ['GET', 'POST'])
 def newpost():
     #If the form was just submitted:
-    #if request.method == 'POST':
-        #return render_template('postSuccess.html')
-    #else:
+    if request.method == 'POST':
+        #Change offer status value to string
+        offerVar = "False"
+        if request.form.get('offer_stat', False):
+            offerVar = "True"
+
+        #Construct the message string
+        message = 'Company: ' + request.form['company'] + "\nJob: " + request.form['job'] + "\nReceived Offer: " + offerVar + "\nReview: " + request.form['review'] + "\nInterview Questions: " + request.form['questions']
+        print(message)
+        return redirect(url_for('postsuccess'))
+    else:
         return render_template('newPost.html')
+
+@app.route('/postsuccess', methods = ['GET', 'POST'])
+def postsuccess():
+    return render_template('postSuccess.html')
 
 @app.route('/logout')
 def logout():
